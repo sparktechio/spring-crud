@@ -19,7 +19,7 @@ public interface ReadAction<Id, Entity extends BaseEntity<Id>, Response extends 
     default Response findById(String id, PathParams pathParams) {
         var entity = getService().findById(id, additionalFindFilter(pathParams));
         onAfterFind(entity, pathParams);
-        return getMapper().toDto(entity);
+        return getMapper().toFullDto(entity, pathParams);
     }
 
     default void onAfterFind(Entity entity, PathParams pathParams) {

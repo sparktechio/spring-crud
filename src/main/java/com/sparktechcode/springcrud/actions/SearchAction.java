@@ -32,6 +32,6 @@ public interface SearchAction<Id, Entity extends BaseEntity<Id>, Response extend
     }
 
     default PageData<Response> search(QueryParams queryParams, PathParams pathParams) {
-        return getSearchMapper().toPage(getService().search(queryParams, additionalSearchFilter(queryParams, pathParams)));
+        return getSearchMapper().toPage(getService().search(queryParams, additionalSearchFilter(queryParams, pathParams)), pathParams);
     }
 }

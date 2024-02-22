@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.Map;
+
 public interface ReadController<Id, Entity extends BaseEntity<Id>, Response extends IdHolder<Id>> extends
         ReadAction<Id, Entity, Response> {
 
@@ -15,8 +17,8 @@ public interface ReadController<Id, Entity extends BaseEntity<Id>, Response exte
     @GetMapping("{id}")
     default Response findById(
             @PathVariable String id,
-            @PathVariable(required = false) PathParams pathParams
+            @PathVariable(required = false) Map<String, String> pathParams
     ) {
-        return ReadAction.super.findById(id, pathParams);
+        return findById(id, PathParams.of(pathParams));
     }
 }

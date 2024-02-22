@@ -10,17 +10,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Map;
+
 public interface UpdateController<Id, Request, Entity extends BaseEntity<Id>, Response extends IdHolder<Id>> extends
         UpdateAction<Id, Request, Entity, Response> {
 
-    @Override
     @Transactional()
     @PutMapping("{id}")
     default Response update(
             @PathVariable String id,
             @Validated @RequestBody Request payload,
-            @PathVariable(required = false) PathParams pathParams
+            @PathVariable(required = false) Map<String, String> pathParams
     ) {
-        return UpdateAction.super.update(id, payload, pathParams);
+        return update(id, payload, PathParams.of(pathParams));
     }
 }

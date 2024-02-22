@@ -22,7 +22,7 @@ public interface DeleteAction<Id, Entity extends BaseEntity<Id>, Response extend
         onBeforeDelete(entity, pathParams);
         entity = getService().remove(entity);
         onAfterDelete(entity);
-        return getMapper().toDto(entity);
+        return getMapper().toFullDto(entity, pathParams);
     }
 
     default void onBeforeDelete(String id, PathParams pathParams) {

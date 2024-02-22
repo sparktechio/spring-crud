@@ -9,4 +9,10 @@ public interface QueryParams extends MultiValueMap<String, String> {
         class QueryParamsImpl extends LinkedMultiValueMap<String, String> implements QueryParams {}
         return new QueryParamsImpl();
     }
+
+    static QueryParams of(MultiValueMap<String, String> params) {
+        var instance = getInstance();
+        instance.putAll(params);
+        return instance;
+    }
 }

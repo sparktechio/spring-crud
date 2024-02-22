@@ -18,7 +18,7 @@ public interface WriteMapper<Id, Entity extends BaseEntity<Id>, R> {
 
     default void toExistingEntity(R request, Entity entity, PathParams pathParams) {
         toEntity(request, entity);
-        onAfterUpdate(request, entity);
+        onAfterUpdate(request, entity, pathParams);
     }
 
     default void onAfterCreate(R request, Entity entity, PathParams pathParams) {

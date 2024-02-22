@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.Map;
+
 public interface DeleteController<Id, Entity extends BaseEntity<Id>, Response extends IdHolder<Id>> extends
         DeleteAction<Id, Entity, Response> {
 
@@ -15,8 +17,8 @@ public interface DeleteController<Id, Entity extends BaseEntity<Id>, Response ex
     @DeleteMapping("{id}")
     default Response remove(
             @PathVariable String id,
-            @PathVariable(required = false) PathParams pathParams
+            @PathVariable(required = false) Map<String, String> pathParams
     ) {
-        return DeleteAction.super.remove(id, pathParams);
+        return remove(id, PathParams.of(pathParams));
     }
 }

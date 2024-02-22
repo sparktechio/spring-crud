@@ -23,7 +23,7 @@ public interface CreateAction<Id, Request, Entity extends BaseEntity<Id>, Respon
         onBeforeCreate(payload, entity, pathParams);
         entity = getService().create(entity);
         onAfterCreate(entity);
-        return getMapper().toDto(entity);
+        return getMapper().toFullDto(entity, pathParams);
     }
 
     default void onBeforeCreate(Request payload, PathParams pathParams) {

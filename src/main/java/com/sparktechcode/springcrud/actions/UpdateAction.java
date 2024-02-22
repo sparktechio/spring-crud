@@ -24,7 +24,7 @@ public interface UpdateAction<Id, Request, Entity extends BaseEntity<Id>, Respon
         onBeforeUpdate(id, payload, entity, pathParams);
         entity = getService().update(entity);
         onAfterUpdate(entity, pathParams);
-        return getMapper().toDto(entity);
+        return getMapper().toFullDto(entity, pathParams);
     }
 
     default void onBeforeUpdate(String id, Request payload, PathParams pathParams) {

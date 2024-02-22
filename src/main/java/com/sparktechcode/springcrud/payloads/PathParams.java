@@ -10,6 +10,12 @@ public interface PathParams extends Map<String, String> {
         return new PathParamsImpl();
     }
 
+    static PathParams of(Map<String, String> params) {
+        var instance = getInstance();
+        instance.putAll(params);
+        return instance;
+    }
+
     default String getId() {
         return get("id");
     }

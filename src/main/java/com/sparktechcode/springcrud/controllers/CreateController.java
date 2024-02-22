@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Map;
+
 public interface CreateController<Id, Request, Entity extends BaseEntity<Id>, Response extends IdHolder<Id>> extends
         CreateAction<Id, Request, Entity, Response> {
 
@@ -18,8 +20,8 @@ public interface CreateController<Id, Request, Entity extends BaseEntity<Id>, Re
     @Transactional()
     default Response create(
             @Validated @RequestBody Request payload,
-            @PathVariable(required = false) PathParams pathParams
+            @PathVariable(required = false) Map<String, String> pathParams
     ) {
-        return CreateAction.super.create(payload, pathParams);
+        return create(payload, PathParams.of(pathParams));
     }
 }
