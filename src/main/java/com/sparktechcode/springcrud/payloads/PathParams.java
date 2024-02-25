@@ -28,6 +28,10 @@ public interface PathParams extends Map<String, String> {
         return get("companyId");
     }
 
+    default String getBusinessUnitId() {
+        return get("businessUnitId");
+    }
+
     default String getUserId() {
         return get("userId");
     }
