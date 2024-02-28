@@ -24,7 +24,7 @@ public interface SearchController<Id, Entity extends BaseEntity<Id>, Response ex
             @RequestParam(required = false) List<String> filter,
             @RequestParam(required = false) List<String> order,
             @RequestParam(required = false, defaultValue = "0") Integer page,
-            @RequestParam(required = false, defaultValue = "10") Integer limit,
+            @RequestParam(required = false, defaultValue = "12") Integer limit,
             @RequestParam(required = false) Boolean allData,
             @PathVariable(required = false) Map<String, String> pathParams,
             @RequestParam(required = false) MultiValueMap<String, String> queryParams) {

@@ -2,8 +2,8 @@ package com.sparktechcode.springcrud.services;
 
 import com.sparktechcode.springcrud.exceptions.NotFoundException;
 import com.sparktechcode.springjpasearch.entities.BaseEntity;
-import com.sparktechcode.springjpasearch.repositories.SparkJpaRepository;
 import com.sparktechcode.springjpasearch.services.SearchService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
@@ -17,21 +17,19 @@ import static java.lang.String.join;
 
 public interface CrudService<Id, Entity extends BaseEntity<Id>> extends SearchService<Id, Entity> {
 
-    SparkJpaRepository<Id, Entity> getRepository();
-
     default Entity findById(String id) {
-        return getRepository().findById(id).orElseThrow(() -> notFoundException(id));
+        return tryToFindById(id).orElseThrow(() -> notFoundException(id));
     }
 
     default Optional<Entity> tryToFindById(String id) {
-        return getRepository().findById(id);
+        return Optional.ofNullable(getEntityManager().find(getEntityClass(), id));
     }
 
     default Entity findById(String id, Specification<Entity> specification) {
         if (specification == null) {
             return findById(id);
         } else {
-            return getRepository().findOne((root, query, builder) ->
+            return findOne((root, query, builder) ->
                     builder.and(
                             builder.equal(root.get("id"), id),
                             specification.toPredicate(root, query, builder)
@@ -44,7 +42,7 @@ public interface CrudService<Id, Entity extends BaseEntity<Id>> extends SearchSe
         if (specification == null) {
             return tryToFindById(id);
         } else {
-            return getRepository().findOne((root, query, builder) ->
+            return findOne((root, query, builder) ->
                     builder.and(
                             builder.equal(root.get("id"), id),
                             specification.toPredicate(root, query, builder)
@@ -54,47 +52,37 @@ public interface CrudService<Id, Entity extends BaseEntity<Id>> extends SearchSe
     }
 
     default Entity getReferenceById(String id) {
-        return getRepository().getReferenceById(id);
-    }
-
-    default List<Entity> findAll() {
-        return getRepository().findAll();
-    }
-
-    default List<Entity> findBy(Specification<Entity> specification) {
-        return getRepository().findAll(specification);
-    }
-
-    default Long countBy(Specification<Entity> specification) {
-        return getRepository().count(specification);
+        return getEntityManager().getReference(getEntityClass(), id);
     }
 
     default List<Entity> findByIds(List<String> ids) {
         if (ids == null) {
             return new ArrayList<>();
         }
-        return getRepository().findAllById(ids);
+        return findAllById(ids);
     }
 
     default List<Entity> findByIds(List<String> ids, Specification<Entity> specification) {
         if (specification == null) {
             return findByIds(ids);
         } else {
-            return getRepository().findAll((root, query, builder) ->
-                    builder.and(
+            return findAll(
+                    (root, query, builder) -> builder.and(
                             root.get("id").in(ids),
                             specification.toPredicate(root, query, builder)
-                    )
-            );
+                    ),
+                    Pageable.unpaged()
+            ).getContent();
         }
     }
 
     default Entity save(Entity entity) {
-        return getRepository().save(entity);
+        getEntityManager().persist(entity);
+        return entity;
     }
 
     default Entity saveAndDo(Entity entity, Consumer<Entity> afterSave) {
-        entity = getRepository().save(entity);
+        entity = save(entity);
         afterSave.accept(entity);
         return entity;
     }
@@ -108,7 +96,7 @@ public interface CrudService<Id, Entity extends BaseEntity<Id>> extends SearchSe
     }
 
     default Entity remove(Entity entity) {
-        getRepository().delete(entity);
+        getEntityManager().remove(entity);
         return entity;
     }
 
