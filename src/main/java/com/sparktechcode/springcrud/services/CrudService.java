@@ -55,14 +55,14 @@ public interface CrudService<Id, Entity extends BaseEntity<Id>> extends SearchSe
         return getEntityManager().getReference(getEntityClass(), id);
     }
 
-    default List<Entity> findByIds(List<String> ids) {
+    default List<Entity> findByIds(List<Id> ids) {
         if (ids == null) {
             return new ArrayList<>();
         }
         return findAllById(ids);
     }
 
-    default List<Entity> findByIds(List<String> ids, Specification<Entity> specification) {
+    default List<Entity> findByIds(List<Id> ids, Specification<Entity> specification) {
         if (specification == null) {
             return findByIds(ids);
         } else {
