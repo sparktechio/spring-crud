@@ -23,7 +23,7 @@ public interface UpdateAction<Id, Request, Entity extends BaseEntity<Id>, Respon
         getMapper().toExistingEntity(payload, entity, pathParams);
         onBeforeUpdate(id, payload, entity, pathParams);
         entity = getService().update(entity);
-        onAfterUpdate(entity, pathParams);
+        onAfterUpdate(payload, entity, pathParams);
         return getMapper().toFullDto(entity, pathParams);
     }
 
@@ -37,6 +37,10 @@ public interface UpdateAction<Id, Request, Entity extends BaseEntity<Id>, Respon
 
     default void onBeforeUpdate(String id, Request payload, Entity entity, PathParams pathParams) {
         onBeforeUpdate(id, payload, entity);
+    }
+
+    default void onAfterUpdate(Request payload, Entity entity, PathParams pathParams) {
+        onBeforeUpdate(entity, pathParams);
     }
 
     default void onAfterUpdate(Entity entity, PathParams pathParams) {
