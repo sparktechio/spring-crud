@@ -19,7 +19,7 @@ public interface UpdateAction<Id, Request, Entity extends BaseEntity<Id>, Respon
     default Response update(String id, Request payload, PathParams pathParams) {
         onBeforeUpdate(id, payload, pathParams);
         var entity = getService().findById(id, additionalFindFilter(pathParams));
-        onBeforeUpdate(entity, pathParams);
+        onBeforeMapping(id, payload, entity, pathParams);
         getMapper().toExistingEntity(payload, entity, pathParams);
         onBeforeUpdate(id, payload, entity, pathParams);
         entity = getService().update(entity);
@@ -28,32 +28,40 @@ public interface UpdateAction<Id, Request, Entity extends BaseEntity<Id>, Respon
     }
 
     default void onBeforeUpdate(String id, Request payload, PathParams pathParams) {
-        onBeforeUpdate(id, payload);
     }
 
-    default void onBeforeUpdate(Entity entity, PathParams pathParams) {
-        onBeforeUpdate(entity);
+    default void onBeforeMapping(String id, Request payload, Entity entity, PathParams pathParams) {
+        onBeforeMapping(payload, entity, pathParams);
+    }
+
+    default void onBeforeMapping(Request payload, Entity entity, PathParams pathParams) {
+        onBeforeMapping(payload, entity);
+    }
+
+    default void onBeforeMapping(Request payload, Entity entity) {
+        onBeforeMapping(entity);
+    }
+
+    default void onBeforeMapping(Entity entity) {
     }
 
     default void onBeforeUpdate(String id, Request payload, Entity entity, PathParams pathParams) {
         onBeforeUpdate(id, payload, entity);
     }
 
-    default void onAfterUpdate(Request payload, Entity entity, PathParams pathParams) {
-        onBeforeUpdate(entity, pathParams);
-    }
-
-    default void onAfterUpdate(Entity entity, PathParams pathParams) {
+    default void onBeforeUpdate(String id, Request payload, Entity entity) {
         onBeforeUpdate(entity);
-    }
-
-    default void onBeforeUpdate(String id, Request payload) {
     }
 
     default void onBeforeUpdate(Entity entity) {
     }
 
-    default void onBeforeUpdate(String id, Request payload, Entity entity) {
+    default void onAfterUpdate(Request payload, Entity entity, PathParams pathParams) {
+        onAfterUpdate(entity, pathParams);
+    }
+
+    default void onAfterUpdate(Entity entity, PathParams pathParams) {
+        onAfterUpdate(entity);
     }
 
     default void onAfterUpdate(Entity entity) {
