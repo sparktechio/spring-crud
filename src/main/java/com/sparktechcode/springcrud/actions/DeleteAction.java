@@ -12,11 +12,11 @@ public interface DeleteAction<Id, Entity extends BaseEntity<Id>, Response extend
     ReadMapper<Id, Entity, Response> getMapper();
     CrudService<Id, Entity> getService();
 
-    default Response remove(String id) {
+    default Response remove(Id id) {
         return remove(id, PathParams.getInstance());
     }
 
-    default Response remove(String id, PathParams pathParams) {
+    default Response remove(Id id, PathParams pathParams) {
         onBeforeDelete(id, pathParams);
         var entity = getService().findById(id, additionalFindFilter(pathParams));
         onBeforeDelete(entity, pathParams);
@@ -25,7 +25,7 @@ public interface DeleteAction<Id, Entity extends BaseEntity<Id>, Response extend
         return getMapper().toFullDto(entity, pathParams);
     }
 
-    default void onBeforeDelete(String id, PathParams pathParams) {
+    default void onBeforeDelete(Id id, PathParams pathParams) {
         onBeforeDelete(id);
     }
 
@@ -33,7 +33,7 @@ public interface DeleteAction<Id, Entity extends BaseEntity<Id>, Response extend
         onBeforeDelete(entity);
     }
 
-    default void onBeforeDelete(String id) {
+    default void onBeforeDelete(Id id) {
     }
 
     default void onBeforeDelete(Entity entity) {

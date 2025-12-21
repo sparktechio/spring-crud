@@ -12,11 +12,11 @@ public interface ReadAction<Id, Entity extends BaseEntity<Id>, Response extends 
     ReadMapper<Id, Entity, Response> getMapper();
     CrudService<Id, Entity> getService();
 
-    default Response findById(String id) {
+    default Response findById(Id id) {
         return findById(id, PathParams.getInstance());
     }
 
-    default Response findById(String id, PathParams pathParams) {
+    default Response findById(Id id, PathParams pathParams) {
         var entity = getService().findById(id, additionalFindFilter(pathParams));
         onAfterFind(entity, pathParams);
         return getMapper().toFullDto(entity, pathParams);

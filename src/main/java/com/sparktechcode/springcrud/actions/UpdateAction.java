@@ -12,11 +12,11 @@ public interface UpdateAction<Id, Request, Entity extends BaseEntity<Id>, Respon
     CrudMapper<Id, Request, Entity, Response> getMapper();
     CrudService<Id, Entity> getService();
 
-    default Response update(String id, Request payload) {
+    default Response update(Id id, Request payload) {
         return update(id, payload, PathParams.getInstance());
     }
 
-    default Response update(String id, Request payload, PathParams pathParams) {
+    default Response update(Id id, Request payload, PathParams pathParams) {
         onBeforeUpdate(id, payload, pathParams);
         var entity = getService().findById(id, additionalFindFilter(pathParams));
         onBeforeMapping(id, payload, entity, pathParams);
@@ -27,10 +27,10 @@ public interface UpdateAction<Id, Request, Entity extends BaseEntity<Id>, Respon
         return getMapper().toFullDto(entity, pathParams);
     }
 
-    default void onBeforeUpdate(String id, Request payload, PathParams pathParams) {
+    default void onBeforeUpdate(Id id, Request payload, PathParams pathParams) {
     }
 
-    default void onBeforeMapping(String id, Request payload, Entity entity, PathParams pathParams) {
+    default void onBeforeMapping(Id id, Request payload, Entity entity, PathParams pathParams) {
         onBeforeMapping(payload, entity, pathParams);
     }
 
@@ -45,11 +45,11 @@ public interface UpdateAction<Id, Request, Entity extends BaseEntity<Id>, Respon
     default void onBeforeMapping(Entity entity) {
     }
 
-    default void onBeforeUpdate(String id, Request payload, Entity entity, PathParams pathParams) {
+    default void onBeforeUpdate(Id id, Request payload, Entity entity, PathParams pathParams) {
         onBeforeUpdate(id, payload, entity);
     }
 
-    default void onBeforeUpdate(String id, Request payload, Entity entity) {
+    default void onBeforeUpdate(Id id, Request payload, Entity entity) {
         onBeforeUpdate(entity);
     }
 

@@ -17,15 +17,15 @@ import static java.lang.String.join;
 
 public interface CrudService<Id, Entity extends BaseEntity<Id>> extends SearchService<Id, Entity> {
 
-    default Entity findById(String id) {
+    default Entity findById(Id id) {
         return tryToFindById(id).orElseThrow(() -> notFoundException(id));
     }
 
-    default Optional<Entity> tryToFindById(String id) {
+    default Optional<Entity> tryToFindById(Id id) {
         return Optional.ofNullable(getEntityManager().find(getEntityClass(), id));
     }
 
-    default Entity findById(String id, Specification<Entity> specification) {
+    default Entity findById(Id id, Specification<Entity> specification) {
         if (specification == null) {
             return findById(id);
         } else {
@@ -38,7 +38,7 @@ public interface CrudService<Id, Entity extends BaseEntity<Id>> extends SearchSe
         }
     }
 
-    default Optional<Entity> tryToFindById(String id, Specification<Entity> specification) {
+    default Optional<Entity> tryToFindById(Id id, Specification<Entity> specification) {
         if (specification == null) {
             return tryToFindById(id);
         } else {
@@ -51,7 +51,7 @@ public interface CrudService<Id, Entity extends BaseEntity<Id>> extends SearchSe
         }
     }
 
-    default Entity getReferenceById(String id) {
+    default Entity getReferenceById(Id id) {
         return getEntityManager().getReference(getEntityClass(), id);
     }
 
