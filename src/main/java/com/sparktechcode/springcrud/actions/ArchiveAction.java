@@ -1,16 +1,17 @@
 package com.sparktechcode.springcrud.actions;
 
 import com.sparktechcode.springcrud.controllers.find.FilterableAction;
-import com.sparktechcode.springcrud.entities.BaseArchiveEntity;
+import com.sparktechcode.springcrud.entities.ArchiveEntity;
 import com.sparktechcode.springcrud.mappers.ReadMapper;
 import com.sparktechcode.springcrud.payloads.PathParams;
 import com.sparktechcode.springcrud.services.CrudService;
+import com.sparktechcode.springjpasearch.entities.BaseEntity;
 import com.sparktechcode.springjpasearch.entities.IdHolder;
 
 import java.io.Serializable;
 import java.time.Instant;
 
-public interface ArchiveAction<Id extends Serializable, Entity extends BaseArchiveEntity<Id>, Response extends IdHolder<Id>> extends FilterableAction<Id, Entity> {
+public interface ArchiveAction<Id extends Serializable, Entity extends BaseEntity<Id> & ArchiveEntity, Response extends IdHolder<Id>> extends FilterableAction<Id, Entity> {
 
     ReadMapper<Id, Entity, Response> getMapper();
     CrudService<Id, Entity> getService();

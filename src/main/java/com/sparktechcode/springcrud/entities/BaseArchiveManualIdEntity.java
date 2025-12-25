@@ -13,7 +13,7 @@ import java.time.Instant;
 @Setter
 @MappedSuperclass
 @ToString(callSuper = true, onlyExplicitlyIncluded = true)
-public abstract class BaseArchiveEntity<Id extends Serializable> extends AutoIdBaseEntity<Id> implements ArchiveEntity {
+public abstract class BaseArchiveManualIdEntity<Id extends Serializable> extends ManualIdBaseEntity<Id> implements ArchiveEntity {
 
     @Column(name = "archived")
     private Instant archived;

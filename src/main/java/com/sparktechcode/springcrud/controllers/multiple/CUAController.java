@@ -1,8 +1,7 @@
 package com.sparktechcode.springcrud.controllers.multiple;
 
 import com.sparktechcode.springcrud.controllers.ArchiveController;
-import com.sparktechcode.springcrud.controllers.ReadController;
-import com.sparktechcode.springcrud.controllers.SearchController;
+import com.sparktechcode.springcrud.controllers.CreateController;
 import com.sparktechcode.springcrud.controllers.UpdateController;
 import com.sparktechcode.springcrud.entities.ArchiveEntity;
 import com.sparktechcode.springcrud.payloads.PathParams;
@@ -11,11 +10,10 @@ import com.sparktechcode.springjpasearch.entities.IdHolder;
 
 import java.io.Serializable;
 
-public interface SRUAController<Id extends Serializable, Request, Entity extends BaseEntity<Id> & ArchiveEntity, Response extends IdHolder<Id>> extends
-        ReadController<Id, Entity, Response>,
-        ArchiveController<Id, Entity, Response>,
+public interface CUAController<Id extends Serializable, Request, Entity extends BaseEntity<Id> & ArchiveEntity, Response extends IdHolder<Id>> extends
+        CreateController<Id, Request, Entity, Response>,
         UpdateController<Id, Request, Entity, Response>,
-        SearchController<Id, Entity, Response> {
+        ArchiveController<Id, Entity, Response> {
 
     default void onBeforeMapping(Id id, Entity entity, PathParams pathParams) {
         onBeforeMapping(entity, pathParams);
