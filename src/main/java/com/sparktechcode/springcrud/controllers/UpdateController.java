@@ -18,7 +18,7 @@ public interface UpdateController<Id, Request, Entity extends BaseEntity<Id>, Re
     @Transactional()
     @PutMapping("{id}")
     default Response update(
-            @PathVariable String id,
+            @PathVariable Id id,
             @Validated @RequestBody Request payload,
             @PathVariable(required = false) Map<String, String> pathParams
     ) {

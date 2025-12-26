@@ -16,7 +16,7 @@ public interface ReadController<Id, Entity extends BaseEntity<Id>, Response exte
     @Transactional()
     @GetMapping("{id}")
     default Response findById(
-            @PathVariable String id,
+            @PathVariable Id id,
             @PathVariable(required = false) Map<String, String> pathParams
     ) {
         return findById(id, PathParams.of(pathParams));

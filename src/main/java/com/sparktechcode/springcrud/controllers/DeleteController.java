@@ -16,7 +16,7 @@ public interface DeleteController<Id, Entity extends BaseEntity<Id>, Response ex
     @Transactional()
     @DeleteMapping("{id}")
     default Response remove(
-            @PathVariable String id,
+            @PathVariable Id id,
             @PathVariable(required = false) Map<String, String> pathParams
     ) {
         return remove(id, PathParams.of(pathParams));
