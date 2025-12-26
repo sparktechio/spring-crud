@@ -3,6 +3,7 @@ package com.sparktechcode.springcrud.services;
 import com.sparktechcode.springcrud.exceptions.NotFoundException;
 import com.sparktechcode.springjpasearch.entities.BaseEntity;
 import com.sparktechcode.springjpasearch.services.SearchService;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import static java.lang.String.format;
@@ -29,12 +31,11 @@ public interface CrudService<Id, Entity extends BaseEntity<Id>> extends SearchSe
         if (specification == null) {
             return findById(id);
         } else {
-            return findOne((root, query, builder) ->
-                    builder.and(
-                            builder.equal(root.get("id"), id),
-                            specification.toPredicate(root, query, builder)
-                    )
-            ).orElseThrow(() -> notFoundException(id, specification));
+            var ref = new AtomicReference<Predicate>();
+            return findOne((root, query, builder) -> {
+                ref.set(specification.toPredicate(root, query, builder));
+                return builder.and(builder.equal(root.get("id"), id), ref.get());
+            }).orElseThrow(() -> notFoundException(id, ref.get()));
         }
     }
 

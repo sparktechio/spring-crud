@@ -14,7 +14,7 @@
     <groupId>com.sparktechcode</groupId>
     <artifactId>spring-crud</artifactId>
     <name>Spring Crud</name>
-    <version>1.1.10-SNAPSHOT</version>
+    <version>1.1.10</version>
 
     <packaging>jar</packaging>
 
